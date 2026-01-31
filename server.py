@@ -1,46 +1,25 @@
-from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.middleware.cors import CORSMiddleware
-from scipy.spatial import KDTree
+from app import app
 import pandas as pd
 import numpy as np
-import shutil
+import scipy
 import os
 
-app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-]
-
-
+# ----- APIs -----
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
 
-app = FastAPI()
-app.add_middleware(GZipMiddleware)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 # ------------------------------------------------------------
 # Reading CSV for querying
-metadata_df = pd.read_csv("dataset/millionSongs.csv")
+metadata_df = pd.read_csv("dataset/completed/part1.csv")
 
 # This is used for the identification purpose in the /i API
-coords = np.fromfile("dataset/scattered_coords_baked.bin", dtype=np.float32).reshape(
-    -1, 3
-)
+coords = np.fromfile("dataset/test_coords_baked.bin", dtype=np.float32).reshape(-1, 3)
 points_xy = coords[:, :2]
-tree = KDTree(points_xy)
+tree = scipy.spatial.KDTree(points_xy)
 
 
 # Identify songs near a given 2D coordinate
@@ -88,7 +67,7 @@ async def identify_area(x: float, y: float, k: int = 200):
 @app.get("/load-mesh/")
 async def load_mesh():
     return FileResponse(
-        "dataset/scattered_coords_baked.bin", media_type="application/octet-stream"
+        "dataset/test_coords_baked.bin", media_type="application/octet-stream"
     )
 
 
