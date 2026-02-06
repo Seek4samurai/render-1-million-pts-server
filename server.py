@@ -3,6 +3,7 @@ from app import app
 import pandas as pd
 import numpy as np
 import scipy
+import setup
 import os
 
 
@@ -14,10 +15,10 @@ def read_root():
 
 # ------------------------------------------------------------
 # Reading CSV for querying
-metadata_df = pd.read_csv("dataset/completed/part1.csv")
+metadata_df = pd.read_parquet(setup.SM_DATASET)
 
 # This is used for the identification purpose in the /i API
-coords = np.fromfile("dataset/test_coords_baked.bin", dtype=np.float32).reshape(-1, 3)
+coords = np.fromfile(setup.SM_COORDS, dtype=np.float32).reshape(-1, 3)
 points_xy = coords[:, :2]
 tree = scipy.spatial.KDTree(points_xy)
 
@@ -66,9 +67,7 @@ async def identify_area(x: float, y: float, k: int = 200):
 #   - Coordinates are already transformed (baked)
 @app.get("/load-mesh/")
 async def load_mesh():
-    return FileResponse(
-        "dataset/test_coords_baked.bin", media_type="application/octet-stream"
-    )
+    return FileResponse(setup.SM_COORDS, media_type="application/octet-stream")
 
 
 # ------------------------------------------------------------
@@ -82,4 +81,4 @@ async def load_mesh():
 #   Debugging, visual verification, testing
 @app.get("/songs/coords")
 def get_coords():
-    return FileResponse("dataset/coords_new.bin", media_type="application/octet-stream")
+    return FileResponse(setup.SM_COORDS, media_type="application/octet-stream")
