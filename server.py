@@ -15,10 +15,10 @@ def read_root():
 
 # ------------------------------------------------------------
 # Reading CSV for querying
-metadata_df = pd.read_parquet(setup.SM_DATASET)
+metadata_df = pd.read_parquet(setup.M_DATASET)
 
 # This is used for the identification purpose in the /i API
-coords = np.fromfile(setup.SM_COORDS, dtype=np.float32).reshape(-1, 3)
+coords = np.fromfile(setup.M_COORDS, dtype=np.float32).reshape(-1, 3)
 points_xy = coords[:, :2]
 tree = scipy.spatial.KDTree(points_xy)
 

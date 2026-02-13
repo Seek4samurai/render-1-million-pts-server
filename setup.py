@@ -7,3 +7,9 @@ Size -> 1. sm -> 50K points
 
 SM_DATASET = "dataset/sm/sm.parquet"
 SM_COORDS = "dataset/sm/coords.bin"
+
+M_DATASET = "dataset/m/m.parquet"
+M_COORDS = "dataset/m/coords.bin"
+
+L_DATASET = "dataset/l/l.parquet"
+L_COORDS = "dataset/l/coords.bin"
