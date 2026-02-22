@@ -13,3 +13,6 @@ M_COORDS = "dataset/m/coords.bin"
 
 L_DATASET = "dataset/l/l.parquet"
 L_COORDS = "dataset/l/coords.bin"
+
+XL_DATASET = "dataset/xl/xl.parquet"
+XL_COORDS = "dataset/xl/coords.bin"

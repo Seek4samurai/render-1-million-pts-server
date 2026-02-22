@@ -15,10 +15,10 @@ def read_root():
 
 # ------------------------------------------------------------
 # Reading CSV for querying
-metadata_df = pd.read_parquet(setup.M_DATASET)
+metadata_df = pd.read_parquet(setup.XL_DATASET)
 
 # This is used for the identification purpose in the /i API
-coords = np.fromfile(setup.M_COORDS, dtype=np.float32).reshape(-1, 3)
+coords = np.fromfile(setup.XL_COORDS, dtype=np.float32).reshape(-1, 3)
 points_xy = coords[:, :2]
 tree = scipy.spatial.KDTree(points_xy)
 
@@ -67,7 +67,7 @@ async def identify_area(x: float, y: float, k: int = 200):
 #   - Coordinates are already transformed (baked)
 @app.get("/load-mesh/")
 async def load_mesh():
-    return FileResponse(setup.SM_COORDS, media_type="application/octet-stream")
+    return FileResponse(setup.XL_COORDS, media_type="application/octet-stream")
 
 
 # ------------------------------------------------------------
